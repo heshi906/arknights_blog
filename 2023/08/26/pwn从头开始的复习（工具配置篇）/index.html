@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>pwn从头开始的复习（工具篇） | 未来大pwn子的blog</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="preload" as="font" crossorigin="anonymous" href="/font/Bender.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/BenderLight.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/JetBrainsMono-Regular.woff2"><link rel="stylesheet" href="/css/arknights.css"><style>@font-face {
+  font-family: Bender;
+  src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+  font-family: BenderLight;
+  src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}
+</style><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy"}}</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>:root {
+ --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+ --light-background: url('/img/bk.jpg');
+ --theme-encrypt-confirm: 'confirm'
+}</style><script defer src="/js/arknights.js"></script><script defer src="/js/search.js"></script><script defer type="module">import mermaid from '//unpkg.com/mermaid@10.5.0/dist/mermaid.esm.mjs';
+window.mermaid = mermaid;
+code.paintMermaid();
+</script><script async src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script async src="/lib/encrypt/hbe.js"></script><script async src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax','.busuanzi'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script><meta name="generator" content="Hexo 7.0.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup" tabindex="0"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>pwn从头开始的复习（工具篇）</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-08-26T11:53:22.000Z" id="date"> 2023-08-26</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-09-21T02:54:31.654Z" id="updated"> 2023-09-21</time></div></span></div></div><hr><div id="post-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>开学在即，复习一遍pwn。顺便给后人留点东西。</p>
+<h1 id="所需软件及软件包"><a href="#所需软件及软件包" class="headerlink" title="所需软件及软件包"></a>所需软件及软件包</h1><h2 id="写笔记用："><a href="#写笔记用：" class="headerlink" title="写笔记用："></a>写笔记用：</h2><p>Typora （便于上传博客，再没用过word写笔记）</p>
+<h2 id="c语言："><a href="#c语言：" class="headerlink" title="c语言："></a>c语言：</h2><p>code blocks（代码补全，报错提示和调试做得都很好，而且比用来写项目的操作简单打开快）</p>
+<h2 id="Python："><a href="#Python：" class="headerlink" title="Python："></a>Python：</h2><p>PyCharm（好用没得说）</p>
+<h2 id="编辑二进制："><a href="#编辑二进制：" class="headerlink" title="编辑二进制："></a>编辑二进制：</h2><p>vscode（免费且插件多，必备）配置hex editor</p>
+<h2 id="查看程序源代码和反汇编："><a href="#查看程序源代码和反汇编：" class="headerlink" title="查看程序源代码和反汇编："></a>查看程序源代码和反汇编：</h2><p>ida </p>
+<h2 id="另外："><a href="#另外：" class="headerlink" title="另外："></a>另外：</h2><p>需要一款科学上网软件。由于本篇文章要上云，我就不提了。</p>
+<h2 id="Linux64位虚拟机"><a href="#Linux64位虚拟机" class="headerlink" title="Linux64位虚拟机"></a>Linux64位虚拟机</h2><p>乌班图和kali都可，建议乌班图，虽然kali主打一个网络安全，但乌班图支持的软件更多一些。</p>
+<h3 id="下面是虚拟机里面需要的东西："><a href="#下面是虚拟机里面需要的东西：" class="headerlink" title="下面是虚拟机里面需要的东西："></a>下面是虚拟机里面需要的东西：</h3><p>python3（无需编辑器，在主机编，虚拟机带不动，能运行就行）</p>
+<p>python需要的软件包（安装指令去csdn找）：</p>
+<p>1.pwntools</p>
+<p>2.pwngdb</p>
+<p>3.libcsearcher</p>
+<p>需要安装的指令：</p>
+<p>1.Onegadget</p>
+<p>2.ROPgadget</p>
+<p>这些搞完就可以做题了</p>
+<h1 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h1><p>参照西电的pdf，一篇就够了，一千多页</p>
+<p>chatgpt，不懂就问它，它真什么都会</p>
+<h1 id="刷题网站"><a href="#刷题网站" class="headerlink" title="刷题网站"></a>刷题网站</h1><p>buuctf，pwn按照解出人数排，第一页做完就算入门了，做两页就行，后面的难度层次不齐</p>
+<p>西电ctf，我自己也在做，每年都开两个月，质量蛮不错</p>
+<p>做不出来的百度一下，这些网站比较大众，每题都有人写WP和总结</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/09/21/%E4%BF%A1%E5%AE%89%E6%95%B0%E5%AD%A6%E8%87%AA%E7%BC%96%E4%BB%A3%E7%A0%81/">← Next 信安数学自编代码</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/08/24/%E5%88%86%E7%BB%84%E5%AF%B9%E6%8A%97-1-OK-WP/">分组对抗-1-OK-WP Prev →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="To Catalog">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">heshi906</a></h1><div id="description"><p>大概只有漫不经心 才是唯一的解药</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%89%80%E9%9C%80%E8%BD%AF%E4%BB%B6%E5%8F%8A%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text">所需软件及软件包</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E7%AC%94%E8%AE%B0%E7%94%A8%EF%BC%9A"><span class="toc-number">2.1.</span> <span class="toc-text">写笔记用：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#c%E8%AF%AD%E8%A8%80%EF%BC%9A"><span class="toc-number">2.2.</span> <span class="toc-text">c语言：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python%EF%BC%9A"><span class="toc-number">2.3.</span> <span class="toc-text">Python：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%9A"><span class="toc-number">2.4.</span> <span class="toc-text">编辑二进制：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%A8%8B%E5%BA%8F%E6%BA%90%E4%BB%A3%E7%A0%81%E5%92%8C%E5%8F%8D%E6%B1%87%E7%BC%96%EF%BC%9A"><span class="toc-number">2.5.</span> <span class="toc-text">查看程序源代码和反汇编：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%A6%E5%A4%96%EF%BC%9A"><span class="toc-number">2.6.</span> <span class="toc-text">另外：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux64%E4%BD%8D%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-number">2.7.</span> <span class="toc-text">Linux64位虚拟机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E9%9D%A2%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%87%8C%E9%9D%A2%E9%9C%80%E8%A6%81%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%9A"><span class="toc-number">2.7.1.</span> <span class="toc-text">下面是虚拟机里面需要的东西：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90"><span class="toc-number">3.</span> <span class="toc-text">学习资源</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B7%E9%A2%98%E7%BD%91%E7%AB%99"><span class="toc-number">4.</span> <span class="toc-text">刷题网站</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas></body></html>

